@@ -1,7 +1,8 @@
-import { Bell, BookMarked, LogOut, Settings, User } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import SearchBar from './search/SearchBar';
+import { Bell, BookMarked, LogOut, Settings, User } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import SearchBar from "./search/SearchBar";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -18,16 +19,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target as Element).closest('.notification-menu')) {
+      if (!(e.target as Element).closest(".notification-menu")) {
         setShowNotifications(false);
       }
-      if (!(e.target as Element).closest('.profile-menu')) {
+      if (!(e.target as Element).closest(".profile-menu")) {
         setShowProfile(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   return (
@@ -40,22 +41,35 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <BookMarked className="text-primary" size={28} />
-          <h1 className="text-xl font-semibold">NoviList</h1>
+          <Link to="/" className="text-xl font-semibold">
+            NoviList
+          </Link>
         </div>
 
         <div className="flex items-center gap-12">
           <div className="space-x-6">
-            <a href="#" className="nav-link active">Home</a>
-            <a href="#" className="nav-link">Discover</a>
-            <a href="#" className="nav-link">My Library</a>
-            <a href="#" className="nav-link">Stats</a>
+            <Link to="/" className="nav-link active">
+              Home
+            </Link>
+            <Link to="/profile" className="nav-link">
+              Profile
+            </Link>
+            <Link to="/profile" className="nav-link">
+              ReadingList
+            </Link>
+            <a href="/discover" className="nav-link">
+              Discover
+            </a>
+            <a href="#" className="nav-link">
+              Stats
+            </a>
           </div>
 
           <div className="flex items-center gap-4">
             <SearchBar />
-            
+
             <div className="relative notification-menu">
-              <button 
+              <button
                 className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -74,13 +88,25 @@ export default function Navbar() {
                   exit={{ opacity: 0, y: 10 }}
                   className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
                 >
-                  <h3 className="px-4 py-2 text-sm font-semibold border-b border-gray-100">Notifications</h3>
+                  <h3 className="px-4 py-2 text-sm font-semibold border-b border-gray-100">
+                    Notifications
+                  </h3>
                   <div className="max-h-96 overflow-y-auto">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
-                        <p className="text-sm font-medium">New chapter available</p>
-                        <p className="text-xs text-gray-500">Chapter 324 of "The Beginning After The End" is now available</p>
-                        <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
+                      <div
+                        key={i}
+                        className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
+                      >
+                        <p className="text-sm font-medium">
+                          New chapter available
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Chapter 324 of "The Beginning After The End" is now
+                          available
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          2 hours ago
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -92,9 +118,9 @@ export default function Navbar() {
                 </motion.div>
               )}
             </div>
-            
+
             <div className="relative profile-menu">
-              <button 
+              <button
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -135,3 +161,4 @@ export default function Navbar() {
     </motion.nav>
   );
 }
+

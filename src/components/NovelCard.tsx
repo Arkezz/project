@@ -1,12 +1,12 @@
-import { motion } from 'framer-motion';
-import { BookOpen, Heart, List, Star } from 'lucide-react';
-import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import { BookOpen, Heart, List, Star } from "lucide-react";
+import React, { useState } from "react";
 
 interface NovelCardProps {
   id: string;
   title: string;
   originalTitle: string;
-  language: 'cn' | 'kr' | 'jp';
+  language: "cn" | "kr" | "jp";
   cover: string;
   progress: number;
   rating: number;
@@ -18,9 +18,9 @@ interface NovelCardProps {
 }
 
 const languageIndicators = {
-  cn: '🇨🇳',
-  kr: '한',
-  jp: '日'
+  cn: "🇨🇳",
+  kr: "한",
+  jp: "日",
 } as const;
 
 export default function NovelCard({
@@ -46,20 +46,16 @@ export default function NovelCard({
       onHoverEnd={() => setShowDetails(false)}
     >
       <div className="aspect-[2/3] relative">
-        <img
-          src={cover}
-          alt={title}
-          className="w-full h-full object-cover"
-        />
+        <img src={cover} alt={title} className="w-full h-full object-cover" />
         {/* Language indicator */}
         <div className="absolute top-2 left-2 text-xs bg-black/40 backdrop-blur-sm text-white/90 px-1.5 py-0.5 rounded font-medium">
           {languageIndicators[language]}
         </div>
-        
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         {/* Quick actions */}
-        <motion.div 
+        <motion.div
           className="absolute top-2 right-2 flex gap-1.5"
           initial={{ opacity: 0 }}
           animate={{ opacity: showDetails ? 1 : 0 }}
@@ -105,9 +101,14 @@ export default function NovelCard({
       </div>
 
       <div className="p-2">
-        <h3 className="font-medium text-sm line-clamp-1" title={title}>{title}</h3>
+        <h3 className="font-medium text-sm line-clamp-1" title={title}>
+          {title}
+        </h3>
         <div className="flex items-center justify-between mt-1">
-          <p className={`text-xs text-gray-500 font-${language} line-clamp-1`} title={originalTitle}>
+          <p
+            className={`text-xs text-gray-500 font-${language} line-clamp-1`}
+            title={originalTitle}
+          >
             {originalTitle}
           </p>
           <div className="flex items-center gap-1 text-xs text-gray-500">
