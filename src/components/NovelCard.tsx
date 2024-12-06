@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
-import { BookOpen, Heart, List, Star } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import React, { useState } from "react";
+import QuickActions from "./novelcard/QuickActions";
+import ProgressBar from "./novelcard/ProgressBar";
+import NovelDetails from "./novelcard/NovelDetails";
 
 interface NovelCardProps {
   id: string;
@@ -12,7 +15,7 @@ interface NovelCardProps {
   rating: number;
   chaptersRead: number;
   totalChapters: number;
-  status: string;
+  status: "reading" | "completed" | "paused" | "on_hold";
   genres: string[];
   synopsis: string;
 }
@@ -24,6 +27,7 @@ const languageIndicators = {
 } as const;
 
 export default function NovelCard({
+  id,
   title,
   originalTitle,
   language,
@@ -32,10 +36,18 @@ export default function NovelCard({
   rating,
   chaptersRead,
   totalChapters,
+  status,
   genres,
   synopsis,
 }: NovelCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+
+  const handleAction = (type: "favorite" | "status", success: boolean) => {
+    // Here you would typically update the parent component or global state
+    console.log(
+      `Action ${type} ${success ? "succeeded" : "failed"} for novel ${id}`
+    );
+  };
 
   return (
     <motion.div
@@ -47,60 +59,42 @@ export default function NovelCard({
     >
       <div className="aspect-[2/3] relative">
         <img src={cover} alt={title} className="w-full h-full object-cover" />
+
         {/* Language indicator */}
-        <div className="absolute top-2 left-2 text-xs bg-black/40 backdrop-blur-sm text-white/90 px-1.5 py-0.5 rounded font-medium">
+        <motion.div
+          className="absolute top-2 left-2 text-xs bg-black/40 backdrop-blur-sm text-white/90 px-1.5 py-0.5 rounded font-medium z-10"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           {languageIndicators[language]}
-        </div>
+        </motion.div>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Quick actions */}
         <motion.div
-          className="absolute top-2 right-2 flex gap-1.5"
+          className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
           initial={{ opacity: 0 }}
           animate={{ opacity: showDetails ? 1 : 0 }}
           transition={{ duration: 0.2 }}
-        >
-          <button className="p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-800 transition-colors">
-            <Heart size={16} />
-          </button>
-          <button className="p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-800 transition-colors">
-            <List size={16} />
-          </button>
-        </motion.div>
+        />
 
-        {/* Hover content */}
-        <motion.div
-          className="absolute inset-0 p-3 flex flex-col justify-end"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showDetails ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="text-white space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs">
-              <Star size={14} className="text-amber-400" fill="currentColor" />
-              <span>{rating.toFixed(1)}</span>
-              <span className="mx-1">•</span>
-              <span>{genres[0]}</span>
-            </div>
-            <p className="text-xs line-clamp-2 text-gray-200">{synopsis}</p>
-          </div>
-        </motion.div>
+        <QuickActions novelId={id} show={showDetails} onAction={handleAction} />
 
-        {/* Progress bar */}
-        {progress > 0 && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30">
-            <motion.div
-              className="h-full bg-primary"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          </div>
-        )}
+        <NovelDetails
+          show={showDetails}
+          rating={rating}
+          genres={genres}
+          synopsis={synopsis}
+        />
+
+        <ProgressBar progress={progress} status={status} />
       </div>
 
-      <div className="p-2">
+      <motion.div
+        className="p-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
         <h3 className="font-medium text-sm line-clamp-1" title={title}>
           {title}
         </h3>
@@ -116,7 +110,8 @@ export default function NovelCard({
             <span>{chaptersRead}</span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
+

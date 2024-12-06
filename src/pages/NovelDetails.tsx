@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import NovelHeader from "../components/novel/NovelHeader";
 import NovelTabs from "../components/novel/NovelTabs";
 import ReadingProgress from "../components/novel/ReadingProgress";
 import Overview from "../components/novel/Overview";
+import TranslationStatus from "../components/novel/TranslationStatus";
+import ChapterList from "../components/novel/ChapterList";
+import InformationCard from "../components/novel/InformationCard";
 
-// Mock data remains the same
 const novelData = {
   id: "1",
   title: "The Beginning After The End",
@@ -61,21 +63,50 @@ Reincarnated into a new world filled with magic and monsters, the king has a sec
     startDate: "2023-12-15",
     lastRead: "2 days ago",
   },
+  translations: [
+    {
+      language: "English",
+      group: "Official",
+      platform: "Tapas",
+      progress: 98,
+      chapters: 410,
+      status: "Active",
+    },
+    {
+      language: "Spanish",
+      group: "NovelHispano",
+      platform: "NovelHispano.org",
+      progress: 75,
+      chapters: 315,
+      status: "Active",
+    },
+  ],
+  rawChapters: {
+    available: 420,
+    lastUpdated: "2024-03-10",
+    nextRaw: "2024-03-17",
+    source: "Kakao",
+  },
 };
 
 export default function NovelDetails() {
   const [selectedTab, setSelectedTab] = useState<
-    "overview" | "reviews" | "stats"
+    "overview" | "chapters" | "reviews" | "stats"
   >("overview");
 
   const tabs = [
     { id: "overview", label: "Overview" },
+    { id: "chapters", label: "Chapters" },
     { id: "reviews", label: "Reviews" },
     { id: "stats", label: "Statistics" },
   ];
 
   return (
-    <div className="min-h-screen bg-background text-text pt-16">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={`min-h-screen bg-background text-text pt-16 light`}
+    >
       <NovelHeader
         title={novelData.title}
         originalTitle={novelData.originalTitle}
@@ -89,26 +120,41 @@ export default function NovelDetails() {
       />
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex gap-8">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <motion.div
+            className="flex-1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <NovelTabs
               selectedTab={selectedTab}
               onTabChange={(tab) => setSelectedTab(tab as typeof selectedTab)}
               tabs={tabs}
             />
 
-            <motion.div
-              key={selectedTab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {selectedTab === "overview" && <Overview novel={novelData} />}
-            </motion.div>
-          </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {selectedTab === "overview" && <Overview novel={novelData} />}
+                {selectedTab === "chapters" && (
+                  <ChapterList novel={novelData} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
 
-          <div className="w-80 flex-shrink-0">
+          <motion.div
+            className="w-full lg:w-80 flex-shrink-0"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <div className="sticky top-24 space-y-6">
               <ReadingProgress
                 currentChapter={novelData.userProgress.currentChapter}
@@ -118,35 +164,52 @@ export default function NovelDetails() {
                 averageReadingTime={novelData.statistics.readingTime}
               />
 
-              <div className="bg-surface rounded-lg shadow-sm p-4">
-                <h3 className="font-medium mb-4">Information</h3>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Author</span>
-                    <span>{novelData.author}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Artist</span>
-                    <span>{novelData.artist}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Publisher</span>
-                    <span>{novelData.publisher}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Chapters</span>
-                    <span>{novelData.chapters.total}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Status</span>
-                    <span>{novelData.status}</span>
-                  </div>
-                </div>
-              </div>
+              <TranslationStatus
+                translations={novelData.translations}
+                rawChapters={novelData.rawChapters}
+              />
+
+              <motion.div
+                className="bg-surface rounded-lg shadow-sm p-4"
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <InformationCard
+                  info={{
+                    author: novelData.author,
+                    artist: novelData.artist,
+                    publisher: {
+                      original: novelData.publisher,
+                    },
+                    license: {
+                      status: "Licensed",
+                    },
+                    translation: {
+                      status: "Ongoing",
+                      progress: 75,
+                      lastUpdate: "2024-03-10",
+                    },
+                    format: novelData.type,
+                    demographic: "General",
+                    serialization: {
+                      platform: "Tapas",
+                      frequency: novelData.releaseFrequency,
+                    },
+                    statistics: {
+                      rank: 1,
+                      popularity: 1,
+                      readers: novelData.statistics.totalReaders,
+                      favorites: 0,
+                      rating: novelData.rating,
+                      reviews: novelData.totalReviews,
+                    },
+                  }}
+                />
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
