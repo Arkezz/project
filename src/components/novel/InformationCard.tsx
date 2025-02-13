@@ -12,9 +12,12 @@ import {
   Library,
   Star,
   Users,
+  Edit,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface NovelInformation {
+  id: string;
   author: string;
   artist: string;
   publisher: {
@@ -141,10 +144,17 @@ export default function InformationCard({ info }: InformationCardProps) {
 
   return (
     <motion.div
-      className="bg-surface rounded-lg shadow-sm p-4"
+      className="bg-surface rounded-lg shadow-sm p-4 relative"
       whileHover={{ y: -2 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
+      <Link
+        to={`/novel/${info.id}/edit`}
+        className="absolute top-4 right-4 p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+      >
+        <Edit size={20} />
+      </Link>
+
       {sections.map((section, sectionIndex) => (
         <div key={section.title} className={sectionIndex > 0 ? "mt-6" : ""}>
           <h3 className="font-medium mb-4">{section.title}</h3>

@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Bell,
-  BookOpen,
-  MessageCircle,
-  Star,
-  Filter,
-  Check,
-  Calendar,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Bell, Check, Calendar } from "lucide-react";
 import NotificationList from "../components/notifications/NotificationList";
 import NotificationFilters from "../components/notifications/NotificationFilters";
 import { useNotifications } from "../hooks/useNotifications";
@@ -21,21 +13,29 @@ export default function Notifications() {
   return (
     <div className="min-h-screen bg-background">
       {/* Decorative header pattern */}
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(var(--color-primary),0.1),transparent)]" />
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="relative">
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <Bell className="text-primary" size={28} />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs flex items-center justify-center rounded-full">
+                  <motion.span
+                    initial={{ scale: 0.5 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs flex items-center justify-center rounded-full"
+                  >
                     {unreadCount}
-                  </span>
+                  </motion.span>
                 )}
-              </div>
+              </motion.div>
               <h1 className="text-2xl font-semibold">Notifications</h1>
             </div>
             <p className="text-gray-600">
@@ -77,9 +77,11 @@ export default function Notifications() {
 
             return (
               <div key={timeGroup}>
-                <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
-                  <Calendar size={14} />
-                  <span>{timeGroup}</span>
+                <div className="flex items-center gap-2 mb-4">
+                  <Calendar size={14} className="text-primary" />
+                  <span className="text-sm font-medium text-gray-600">
+                    {timeGroup}
+                  </span>
                 </div>
                 <NotificationList
                   notifications={groupNotifications}

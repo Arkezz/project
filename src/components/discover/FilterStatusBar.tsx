@@ -28,7 +28,7 @@ export default function FilterStatusBar({
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-16 z-40 bg-surface border-b border-gray-200 py-3 px-4 md:px-6"
+      className="top-16 z-40 bg-surface border-b border-gray-200 py-3 px-4 md:px-6"
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between gap-4">

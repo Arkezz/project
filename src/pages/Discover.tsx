@@ -7,7 +7,6 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import NovelGrid from "../components/NovelGrid";
 import CategoryPill from "../components/CategoryPill";
 import AdvancedFilters from "../components/filters/AdvancedFilters";
 import FilterStatusBar from "../components/discover/FilterStatusBar";

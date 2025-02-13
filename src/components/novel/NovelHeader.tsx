@@ -1,7 +1,18 @@
 import React, { useState } from "react";
-import { BookOpen, Heart, List, Share2, Star, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  Bookmark,
+  BookOpen,
+  ChevronDown,
+  Heart,
+  List,
+  Share2,
+  Star,
+  Users,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import ReadingListModal from "./ReadingListModal";
 
 interface NovelHeaderProps {
   title: string;
@@ -18,6 +29,12 @@ interface NovelHeaderProps {
   activeReaders: number;
 }
 
+interface ReadingList {
+  id: string;
+  name: string;
+  color: string;
+}
+
 export default function NovelHeader({
   title,
   originalTitle,
@@ -28,9 +45,12 @@ export default function NovelHeader({
   totalRatings,
   chapters,
   activeReaders,
+  isAdult,
 }: NovelHeaderProps) {
   const [isFavorited, setIsFavorited] = useState(false);
-  const [isInList, setIsInList] = useState(false);
+  const [showModal, setShowModal] = React.useState(false);
+  const [showListOptions, setShowListOptions] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -47,20 +67,27 @@ export default function NovelHeader({
     );
   };
 
-  const handleAddToList = () => {
-    setIsInList(!isInList);
-    toast.success(
-      isInList ? "Removed from reading list" : "Added to reading list",
-      {
-        icon: "📚",
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
+  const readingLists: ReadingList[] = [
+    { id: "planning", name: "Planning to Read", color: "text-blue-600" },
+    { id: "reading", name: "Currently Reading", color: "text-green-600" },
+    { id: "completed", name: "Completed", color: "text-purple-600" },
+    { id: "onhold", name: "On Hold", color: "text-yellow-600" },
+    { id: "dropped", name: "Dropped", color: "text-red-600" },
+  ];
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowListOptions(false);
       }
-    );
-  };
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="relative h-96 overflow-hidden">
@@ -113,6 +140,17 @@ export default function NovelHeader({
               >
                 {type}
               </motion.span>
+              {isAdult && (
+                <motion.span
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium flex items-center gap-1.5"
+                >
+                  <AlertTriangle size={14} />
+                  18+
+                </motion.span>
+              )}
             </div>
 
             <motion.h1
@@ -160,17 +198,54 @@ export default function NovelHeader({
               transition={{ delay: 0.3 }}
               className="flex items-center gap-3 mt-6"
             >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleAddToList}
-                className={`btn-primary flex items-center gap-2 ${
-                  isInList ? "bg-green-600 hover:bg-green-700" : ""
-                }`}
-              >
-                <List size={20} />
-                {isInList ? "In Reading List" : "Add to Reading List"}
-              </motion.button>
+              <div className="relative flex" ref={dropdownRef}>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowModal(true)}
+                  className="btn-primary flex items-center gap-2 rounded-r-none border-r border-primary/20"
+                >
+                  <List size={20} />
+                  Add to Reading List
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowListOptions(!showListOptions)}
+                  className="btn-primary px-3 rounded-l-none"
+                >
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform duration-200 ${
+                      showListOptions ? "rotate-180" : ""
+                    }`}
+                  />
+                </motion.button>
+                <AnimatePresence>
+                  {showListOptions && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute right-0 mt-12 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50 w-48"
+                    >
+                      <div className="py-1">
+                        {readingLists.map((list) => (
+                          <motion.button
+                            key={list.id}
+                            whileHover={{ x: 4 }}
+                            className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors flex items-center gap-2 group"
+                          >
+                            <Bookmark size={16} className={list.color} />
+                            <span className="text-sm">{list.name}</span>
+                          </motion.button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -195,17 +270,16 @@ export default function NovelHeader({
                   </motion.div>
                 </AnimatePresence>
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-lg bg-surface hover:bg-gray-100 transition-colors shadow-sm"
-              >
-                <Share2 size={20} />
-              </motion.button>
             </motion.div>
           </div>
         </div>
       </div>
+
+      <ReadingListModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        novel={{ title, originalTitle, cover, chapters }}
+      />
     </div>
   );
 }

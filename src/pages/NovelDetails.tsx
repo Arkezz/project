@@ -7,13 +7,15 @@ import Overview from "../components/novel/Overview";
 import TranslationStatus from "../components/novel/TranslationStatus";
 import ChapterList from "../components/novel/ChapterList";
 import InformationCard from "../components/novel/InformationCard";
+import { Link } from "react-router-dom";
+import { Edit, MessageSquare } from "lucide-react";
 
 const novelData = {
   id: "1",
   title: "The Beginning After The End",
   originalTitle: "디 비기닝 애프터 디 엔드",
   cover:
-    "https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=500",
+    "https://images.unsplash.com/photo-1535666669445-e8c15cd2e7d9?q=80&w=500",
   status: "Ongoing",
   type: "Web Novel",
   author: "TurtleMe",
@@ -168,6 +170,23 @@ export default function NovelDetails() {
                 translations={novelData.translations}
                 rawChapters={novelData.rawChapters}
               />
+
+              <Link
+                to={`/novel/edit`}
+                className="btn-primary flex items-center gap-2 bg-primary hover:bg-primary/90"
+                aria-label="Edit novel"
+              >
+                <Edit size={18} />
+                <span>Edit</span>
+              </Link>
+              <Link
+                to={`/novel/review`}
+                className="btn-primary flex items-center gap-2 bg-secondary hover:bg-secondary/90"
+                aria-label="Write a review"
+              >
+                <MessageSquare size={18} />
+                <span>Review</span>
+              </Link>
 
               <motion.div
                 className="bg-surface rounded-lg shadow-sm p-4"

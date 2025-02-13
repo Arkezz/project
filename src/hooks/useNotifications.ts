@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Notification } from "../types/notifications";
 
 // Mock data - in a real app, this would come from an API
@@ -38,6 +38,12 @@ const mockNotifications: Notification[] = [
     type: "mention",
     message: "DragonHunter mentioned you in a thread",
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    user: {
+      id: "dragonhunter",
+      name: "DragonHunter",
+      avatar:
+        "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b6232361-HMFWxCIxRFoI.png", // Random Pixiv image URL
+    },
     read: true,
   },
 ];

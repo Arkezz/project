@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import QuickActions from "./novelcard/QuickActions";
 import ProgressBar from "./novelcard/ProgressBar";
 import NovelDetails from "./novelcard/NovelDetails";
@@ -43,11 +44,12 @@ export default function NovelCard({
   const [showDetails, setShowDetails] = useState(false);
 
   const handleAction = (type: "favorite" | "status", success: boolean) => {
-    // Here you would typically update the parent component or global state
     console.log(
       `Action ${type} ${success ? "succeeded" : "failed"} for novel ${id}`
     );
   };
+
+  const novelUrl = `/novel/${id}`;
 
   return (
     <motion.div
@@ -57,10 +59,13 @@ export default function NovelCard({
       onHoverStart={() => setShowDetails(true)}
       onHoverEnd={() => setShowDetails(false)}
     >
-      <div className="aspect-[2/3] relative">
+      <Link
+        to={novelUrl}
+        className="block aspect-[2/3] relative"
+        onClick={(e) => e.stopPropagation()}
+      >
         <img src={cover} alt={title} className="w-full h-full object-cover" />
 
-        {/* Language indicator */}
         <motion.div
           className="absolute top-2 left-2 text-xs bg-black/40 backdrop-blur-sm text-white/90 px-1.5 py-0.5 rounded font-medium z-10"
           initial={{ opacity: 0, x: -10 }}
@@ -87,7 +92,7 @@ export default function NovelCard({
         />
 
         <ProgressBar progress={progress} status={status} />
-      </div>
+      </Link>
 
       <motion.div
         className="p-2"
@@ -95,9 +100,15 @@ export default function NovelCard({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <h3 className="font-medium text-sm line-clamp-1" title={title}>
-          {title}
-        </h3>
+        <Link
+          to={novelUrl}
+          className="block hover:text-primary transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className="font-medium text-sm line-clamp-1" title={title}>
+            {title}
+          </h3>
+        </Link>
         <div className="flex items-center justify-between mt-1">
           <p
             className={`text-xs text-gray-500 font-${language} line-clamp-1`}
@@ -114,4 +125,3 @@ export default function NovelCard({
     </motion.div>
   );
 }
-

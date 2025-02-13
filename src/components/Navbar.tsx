@@ -9,6 +9,9 @@ import {
 import SearchBar from "./search/SearchBar";
 import { Link } from "react-router-dom";
 import FloatingMenu from "./navigation/FloatingMenu"; // Import the new floating menu component
+import { useNotifications } from "../hooks/useNotifications";
+import { formatDistanceToNow } from "date-fns";
+import ProfileDropdown from "./auth/ProfileDropdown"; // Import ProfileDropdown
 
 export default function Navbar() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -18,6 +21,8 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const { scrollY } = useScroll();
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
+  const [activeLink, setActiveLink] = useState(window.location.pathname);
+  const { notifications } = useNotifications();
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +51,15 @@ export default function Navbar() {
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setActiveLink(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
   // Prevent body scroll when mobile menu is open
@@ -84,19 +98,47 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-12">
             <div className="space-x-6">
-              <Link to="/" className="nav-link active">
+              <Link
+                to="/"
+                className={`nav-link ${activeLink === "/" ? "active" : ""}`}
+                onClick={() => setActiveLink("/")}
+              >
                 Home
               </Link>
-              <Link to="/profile" className="nav-link">
+              <Link
+                to="/profile"
+                className={`nav-link ${
+                  activeLink === "/profile" ? "active" : ""
+                }`}
+                onClick={() => setActiveLink("/profile")}
+              >
                 Profile
               </Link>
-              <Link to="/reading-list" className="nav-link">
+              <Link
+                to="/reading-list"
+                className={`nav-link ${
+                  activeLink === "/reading-list" ? "active" : ""
+                }`}
+                onClick={() => setActiveLink("/reading-list")}
+              >
                 ReadingList
               </Link>
-              <Link to="/discover" className="nav-link">
+              <Link
+                to="/discover"
+                className={`nav-link ${
+                  activeLink === "/discover" ? "active" : ""
+                }`}
+                onClick={() => setActiveLink("/discover")}
+              >
                 Discover
               </Link>
-              <Link to="/forum" className="nav-link">
+              <Link
+                to="/forum"
+                className={`nav-link ${
+                  activeLink === "/forum" ? "active" : ""
+                }`}
+                onClick={() => setActiveLink("/forum")}
+              >
                 Forum
               </Link>
             </div>
@@ -130,20 +172,21 @@ export default function Navbar() {
                         Notifications
                       </h3>
                       <div className="max-h-96 overflow-y-auto">
-                        {[1, 2, 3].map((i) => (
+                        {notifications.map((notification) => (
                           <div
-                            key={i}
+                            key={notification.id}
                             className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
                           >
                             <p className="text-sm font-medium">
-                              New chapter available
+                              {notification.message}
                             </p>
                             <p className="text-xs text-gray-500">
-                              Chapter 324 of "The Beginning After The End" is
-                              now available
-                            </p>
-                            <p className="text-xs text-gray-400 mt-1">
-                              2 hours ago
+                              {formatDistanceToNow(
+                                new Date(notification.timestamp),
+                                {
+                                  addSuffix: true,
+                                }
+                              )}
                             </p>
                           </div>
                         ))}
@@ -174,36 +217,10 @@ export default function Navbar() {
                   <User size={24} />
                 </button>
 
-                <AnimatePresence>
-                  {showProfile && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
-                    >
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="font-medium">John Doe</p>
-                        <p className="text-sm text-gray-500">
-                          john@example.com
-                        </p>
-                      </div>
-                      <div className="py-1">
-                        <Link
-                          to="/settings"
-                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
-                        >
-                          <Settings size={16} />
-                          Settings
-                        </Link>
-                        <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600">
-                          <LogOut size={16} />
-                          Logout
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <ProfileDropdown
+                  isOpen={showProfile}
+                  onClose={() => setShowProfile(false)}
+                />
               </div>
             </div>
           </div>
