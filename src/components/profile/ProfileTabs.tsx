@@ -64,11 +64,13 @@ export default function ProfileTabs({
             <button
               key={id}
               onClick={() => onTabChange(id)}
-              className={`relative flex items-center gap-2 px-6 py-4 transition-colors ${
+              className={`relative flex items-center gap-2 px-6 py-4 transition-colors duration-200 ${
                 activeTab === id
                   ? "text-primary font-medium"
                   : "text-gray-600 hover:text-gray-900"
               }`}
+              aria-selected={activeTab === id}
+              role="tab"
             >
               <config.icon size={18} />
               <span>{config.label}</span>
@@ -80,6 +82,7 @@ export default function ProfileTabs({
                     backgroundImage:
                       "linear-gradient(to right, transparent, currentColor, transparent)",
                   }}
+                  transition={{ duration: 0.2 }}
                 />
               )}
             </button>

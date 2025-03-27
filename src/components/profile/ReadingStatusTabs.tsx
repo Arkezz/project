@@ -41,17 +41,19 @@ export default function ReadingStatusTabs({
       {(
         Object.entries(statusConfig) as [
           ReadingStatus,
-          typeof statusConfig.reading
+          typeof statusConfig.reading,
         ][]
       ).map(([status, config]) => (
         <button
           key={status}
           onClick={() => onStatusChange(status)}
-          className={`relative flex items-center gap-2 px-4 py-2 whitespace-nowrap transition-colors ${
+          className={`relative flex items-center gap-2 px-4 py-2 whitespace-nowrap transition-colors duration-200 ${
             activeStatus === status
               ? "text-primary font-medium"
               : "text-gray-600 hover:text-gray-900"
           }`}
+          aria-selected={activeStatus === status}
+          role="tab"
         >
           <config.icon size={18} />
           <span>{config.label}</span>
@@ -60,6 +62,7 @@ export default function ReadingStatusTabs({
             <motion.div
               layoutId="activeTab"
               className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+              transition={{ duration: 0.2 }}
             />
           )}
         </button>

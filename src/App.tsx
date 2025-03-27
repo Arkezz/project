@@ -14,6 +14,8 @@ import NovelEdit from "./pages/NovelEdit";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import OGImage from "./pages/OGImage";
+import EmailPreview from "./pages/EmailPreview";
 // import Home from "./pages/Home";
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
             <Route path="/novel/edit" element={<NovelEdit />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/og" element={<OGImage />} />
           </Routes>
         </main>
         <Footer />
@@ -56,4 +59,3 @@ function App() {
 }
 
 export default App;
-

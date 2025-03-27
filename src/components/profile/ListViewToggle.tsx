@@ -16,23 +16,27 @@ export default function ListViewToggle({
     <div className="flex items-center bg-gray-100 rounded-lg p-1">
       <button
         onClick={() => onViewModeChange("grid")}
-        className={`p-1.5 rounded-md transition-colors ${
+        className={`p-1.5 rounded-md transition-colors duration-200 ${
           viewMode === "grid"
             ? "bg-white shadow-sm text-primary"
             : "text-gray-600 hover:text-gray-900"
         }`}
+        aria-label="Grid view"
+        aria-pressed={viewMode === "grid"}
       >
-        <Grid size={20} />
+        <Grid size={18} />
       </button>
       <button
         onClick={() => onViewModeChange("list")}
-        className={`p-1.5 rounded-md transition-colors ${
+        className={`p-1.5 rounded-md transition-colors duration-200 ${
           viewMode === "list"
             ? "bg-white shadow-sm text-primary"
             : "text-gray-600 hover:text-gray-900"
         }`}
+        aria-label="List view"
+        aria-pressed={viewMode === "list"}
       >
-        <List size={20} />
+        <List size={18} />
       </button>
     </div>
   );
