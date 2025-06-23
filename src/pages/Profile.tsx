@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileTabs from "../components/profile/ProfileTabs";
 import ReadingLists from "../components/profile/ReadingLists";
-// import SocialTab from "../components/profile/tabs/SocialTab";
-// import FavoritesTab from "../components/profile/tabs/FavoritesTab";
-// import ReviewsTab from "../components/profile/tabs/ReviewsTab";
+import SocialTab from "../components/profile/tabs/SocialTab";
+import FavoritesTab from "../components/profile/tabs/FavoritesTab";
+import ReviewsTab from "../components/profile/tabs/ReviewsTab";
 import SubmissionsTab from "../components/profile/tabs/SubmissionsTab";
-// import StatsTab from "../components/profile/tabs/StatsTab";
+import StatsTab from "../components/profile/tabs/StatsTab";
 import { motion, AnimatePresence } from "framer-motion";
 
 type TabId =
@@ -25,6 +25,7 @@ export default function Profile() {
       case "overview":
         return <ReadingLists />;
       case "social":
+        return <SocialTab />;
       case "favorites":
         return <FavoritesTab />;
       case "reviews":
