@@ -151,7 +151,7 @@ export default function ReadingPreferences() {
               <motion.div
                 key={list.id}
                 layout
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group"
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group cursor-grab"
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${list.color}`} />
@@ -159,7 +159,10 @@ export default function ReadingPreferences() {
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button className="p-1 hover:bg-gray-200 rounded">
-                    <GripHorizontal size={16} className="text-gray-400" />
+                    <GripHorizontal
+                      size={16}
+                      className="text-gray-400 group-hover:text-gray-700 group-hover:scale-110 transition-all"
+                    />
                   </button>
                   <button
                     onClick={() => handleRemoveList(list.id)}

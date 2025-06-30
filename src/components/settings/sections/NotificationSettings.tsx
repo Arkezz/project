@@ -116,7 +116,7 @@ export default function NotificationSettings() {
             {settings.map(({ id, title, description, icon: Icon, enabled }) => (
               <div
                 key={id}
-                className="flex items-start justify-between p-4 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors"
+                className="flex items-start justify-between p-4 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors shadow-sm hover:shadow-md"
               >
                 <div className="flex items-start gap-3">
                   <Icon size={20} className="text-primary mt-1" />
@@ -128,7 +128,7 @@ export default function NotificationSettings() {
                 <button
                   onClick={() => toggleSetting(id)}
                   className={`relative w-12 h-6 rounded-full transition-colors ${
-                    enabled ? "bg-green-500" : "bg-gray-200"
+                    enabled ? "bg-green-500" : "bg-gray-200 shadow-inner"
                   }`}
                 >
                   <motion.div

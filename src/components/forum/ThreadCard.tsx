@@ -9,8 +9,13 @@ import {
   Pin,
   Share2,
   Star,
+  Clock,
+  User,
+  Hash,
+  Heart,
 } from "lucide-react";
 import Avatar from "./Avatar";
+import { formatDistanceToNow } from "date-fns";
 
 const tagColors = {
   Discussion: {
@@ -83,51 +88,59 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-surface rounded-xl shadow-sm hover:shadow-md transition-all group relative overflow-hidden"
+      className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 group relative overflow-hidden border border-gray-200"
+      whileHover={{ y: -2 }}
     >
       {/* Status indicator line */}
       {thread.isPinned && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/70" />
       )}
       {thread.isLocked && !thread.isPinned && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gray-300" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-400 to-gray-300" />
       )}
 
-      <div className="p-4">
-        <div className="flex items-start gap-4">
-          {/* Author avatar and voting */}
-          <div className="flex flex-col items-center gap-3">
+      <div className="p-6">
+        <div className="flex gap-4">
+          {/* Left Column - Avatar and Stats */}
+          <div className="flex flex-col items-center gap-3 flex-shrink-0">
             <Avatar
               src={thread.author.avatar}
               alt={thread.author.name}
-              size="md"
+              size="lg"
               fallback={thread.author.name}
             />
-            <div className="flex flex-col items-center gap-1">
-              <button className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-primary">
-                <ArrowBigUp size={20} />
-              </button>
-              <span className="text-sm font-medium">{thread.upvotes}</span>
+
+            {/* Thread Stats */}
+            <div className="flex flex-col items-center gap-2 text-sm">
+              <div className="flex items-center gap-1 text-primary">
+                <ArrowBigUp size={16} />
+                <span className="font-medium">{thread.upvotes}</span>
+              </div>
+              <div className="flex items-center gap-1 text-gray-500">
+                <MessageCircle size={14} />
+                <span>{thread.replyCount}</span>
+              </div>
+              <div className="flex items-center gap-1 text-gray-500">
+                <Eye size={14} />
+                <span>{thread.viewCount}</span>
+              </div>
             </div>
           </div>
 
-          {/* Thread content */}
+          {/* Right Column - Thread content */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0">
+            {/* Thread Header */}
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <div className="min-w-0 flex-1">
                 {/* Title and status icons */}
                 <div className="flex items-center gap-2 flex-wrap mb-2">
                   {thread.isPinned && (
-                    <span className="text-primary" title="Pinned">
-                      <Pin size={16} />
-                    </span>
+                    <Pin size={16} className="text-primary" title="Pinned" />
                   )}
                   {thread.isLocked && (
-                    <span className="text-gray-400" title="Locked">
-                      <Lock size={16} />
-                    </span>
+                    <Lock size={16} className="text-gray-400" title="Locked" />
                   )}
-                  <h3 className="font-medium text-lg group-hover:text-primary transition-colors">
+                  <h3 className="font-semibold text-lg group-hover:text-primary transition-colors line-clamp-2">
                     {thread.title}
                   </h3>
                 </div>
@@ -138,7 +151,7 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
                     <BookOpen size={14} className="text-primary" />
                     <a
                       href="#"
-                      className="text-sm text-primary hover:underline"
+                      className="text-sm text-primary hover:underline font-medium"
                     >
                       {thread.novel.title}
                     </a>
@@ -147,20 +160,32 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
 
                 {/* Author info and timestamp */}
                 <div className="flex items-center gap-3 mb-3 text-sm">
-                  <a href="#" className="font-medium hover:text-primary">
-                    {thread.author.name}
-                  </a>
-                  <div className="px-1.5 py-0.5 bg-amber-100 text-amber-600 rounded text-xs">
-                    Lv.{thread.author.reputation}
+                  <div className="flex items-center gap-2">
+                    <User size={14} className="text-gray-400" />
+                    <a
+                      href="#"
+                      className="font-medium hover:text-primary transition-colors"
+                    >
+                      {thread.author.name}
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
+                    <Hash size={10} />
+                    <span>{thread.author.reputation}</span>
                   </div>
                   <span className="text-gray-400">•</span>
-                  <span className="text-gray-500">
-                    {new Date(thread.createdAt).toLocaleDateString()}
-                  </span>
+                  <div className="flex items-center gap-1 text-gray-500">
+                    <Clock size={14} />
+                    <span>
+                      {formatDistanceToNow(new Date(thread.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Thread preview */}
-                <p className="text-gray-600 line-clamp-2 mb-3">
+                <p className="text-gray-600 line-clamp-2 mb-4 leading-relaxed">
                   {thread.content}
                 </p>
 
@@ -178,7 +203,7 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
                     return (
                       <span
                         key={tag}
-                        className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer
                           ${colorSet.bg} ${colorSet.text} ${colorSet.hover}`}
                       >
                         {tag}
@@ -187,36 +212,43 @@ export default function ThreadCard({ thread }: ThreadCardProps) {
                   })}
                 </div>
               </div>
-            </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5 text-gray-500">
-                  <MessageCircle size={16} />
-                  <span className="text-sm">{thread.replyCount} replies</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-gray-500">
-                  <Eye size={16} />
-                  <span className="text-sm">{thread.viewCount} views</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
+              {/* Quick Actions */}
+              <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-primary"
-                  title="Save thread"
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-red-500"
+                  title="Like thread"
                 >
-                  <Star size={16} />
+                  <Heart size={16} />
                 </button>
                 <button
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-primary"
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-blue-500"
                   title="Share thread"
                 >
                   <Share2 size={16} />
                 </button>
+                <button
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-amber-500"
+                  title="Bookmark thread"
+                >
+                  <Star size={16} />
+                </button>
               </div>
             </div>
+
+            {/* Last Reply Info */}
+            {thread.lastReply && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <span>Last reply</span>
+                  <span>
+                    {formatDistanceToNow(new Date(thread.lastReply), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

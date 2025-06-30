@@ -104,7 +104,7 @@ export default function SecuritySettings() {
             <div className="mt-2">
               <p className="text-sm text-gray-600 mb-1">Password strength:</p>
               <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                <div className="h-full bg-green-500 w-3/4 rounded-full"></div>
+                <div className="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 w-3/4 rounded-full"></div>
               </div>
               <ul className="mt-2 space-y-1 text-xs text-gray-500">
                 <li className="flex items-center gap-1">
@@ -188,11 +188,11 @@ export default function SecuritySettings() {
             <button
               onClick={toggle2FA}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                is2FAEnabled ? "bg-green-500" : "bg-gray-200"
+                is2FAEnabled ? "bg-green-500" : "bg-gray-200 shadow-inner"
               }`}
             >
               <motion.div
-                className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full"
+                className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-sm"
                 animate={{ x: is2FAEnabled ? 24 : 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
@@ -222,7 +222,7 @@ export default function SecuritySettings() {
             {recentLogins.map((login) => (
               <div
                 key={login.id}
-                className={`p-4 rounded-lg border ${login.current ? "border-green-200 bg-green-50" : "border-gray-200"}`}
+                className={`p-4 rounded-lg border shadow-md ${login.current ? "border-green-300 bg-green-50" : "border-gray-200"}`}
               >
                 <div className="flex justify-between">
                   <div className="flex items-center gap-3">
@@ -252,7 +252,7 @@ export default function SecuritySettings() {
                   <div className="mt-3 flex justify-end">
                     <motion.button
                       className="text-red-600 text-sm flex items-center gap-1 hover:underline"
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.05, x: 2 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <LogOut size={14} />

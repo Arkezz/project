@@ -48,7 +48,7 @@ export default function SettingsSidebar({
       >
         <div className="space-y-1">
           {sections.map(({ id, label, icon: Icon }) => (
-            <button
+            <motion.button
               key={id}
               onClick={() => {
                 onSectionChange(id);
@@ -63,18 +63,20 @@ export default function SettingsSidebar({
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 }
               `}
+              whileHover={{ y: -1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Icon size={20} />
               <span>{label}</span>
               {activeSection === id && (
                 <motion.div
                   layoutId="activeSection"
-                  className="absolute inset-0 bg-primary/5 -z-10"
+                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary -z-10"
                   initial={false}
                   transition={{ type: "spring", bounce: 0.2 }}
                 />
               )}
-            </button>
+            </motion.button>
           ))}
         </div>
       </motion.nav>
@@ -85,7 +87,7 @@ export default function SettingsSidebar({
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black lg:hidden"
+          className="fixed inset-0 bg-black lg:hidden backdrop-blur-sm"
           onClick={onToggle}
         />
       )}

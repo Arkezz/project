@@ -10,15 +10,15 @@ export default function AccountSettings() {
   const [isUploading, setIsUploading] = useState(false);
   const [isBannerUploading, setIsBannerUploading] = useState(false);
   const [avatar, setAvatar] = useState(
-    "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b749709-d10WtjTrjyWK.png",
+    "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b749709-d10WtjTrjyWK.png"
   );
   const [banner, setBanner] = useState(
-    "https://s4.anilist.co/file/anilistcdn/user/banner/b749709-NL5ZKZoCj9AU.jpg",
+    "https://s4.anilist.co/file/anilistcdn/user/banner/b749709-NL5ZKZoCj9AU.jpg"
   );
   const [username, setUsername] = useState("NovelReader");
   const [displayName, setDisplayName] = useState("Novel Reader");
   const [bio, setBio] = useState(
-    "I'm an avid reader of web novels, particularly enjoying fantasy and progression genres. Currently reading The Beginning After The End and Omniscient Reader's Viewpoint.",
+    "I'm an avid reader of web novels, particularly enjoying fantasy and progression genres. Currently reading The Beginning After The End and Omniscient Reader's Viewpoint."
   );
   const [theme, setTheme] = useState("system");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
@@ -101,18 +101,20 @@ export default function AccountSettings() {
   const handleThemeChange = (newTheme: string) => {
     setTheme(newTheme);
     toast.success(
-      `Theme changed to ${newTheme === "system" ? "system default" : newTheme}`,
+      `Theme changed to ${newTheme === "system" ? "system default" : newTheme}`
     );
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <div>
-        <h2 className="text-2xl font-semibold mb-6">Profile Settings</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+          Profile Settings
+        </h2>
 
         {/* Profile Preview */}
-        <div className="mb-8 bg-gray-50 rounded-xl overflow-hidden">
-          <div className="relative h-48 bg-gradient-to-r from-primary/10 to-primary/5">
+        <div className="mb-6 sm:mb-8 bg-gray-50 rounded-xl overflow-hidden">
+          <div className="relative h-32 sm:h-48 bg-gradient-to-r from-primary/10 to-primary/5">
             {banner && (
               <img
                 src={banner}
@@ -128,21 +130,29 @@ export default function AccountSettings() {
             >
               <input {...getBannerInputProps()} />
               {isBannerUploading ? (
-                <div className="bg-black/70 p-3 rounded-full">
+                <motion.div
+                  className="bg-black/70 backdrop-blur-sm p-3 rounded-full"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
                   <Loader2 className="w-6 h-6 text-white animate-spin" />
-                </div>
+                </motion.div>
               ) : (
-                <div className="bg-black/70 p-3 rounded-full">
+                <motion.div
+                  className="bg-black/70 backdrop-blur-sm p-3 rounded-full"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
                   <Camera className="w-6 h-6 text-white" />
-                </div>
+                </motion.div>
               )}
             </div>
 
             <div className="absolute bottom-0 left-0 right-0">
-              <div className="mx-4">
+              <div className="mx-3 sm:mx-4">
                 <div className="flex items-end">
                   <div className="relative">
-                    <div className="h-24 w-24">
+                    <div className="h-16 w-16 sm:h-24 sm:w-24 rounded-full overflow-hidden">
                       <img
                         src={avatar}
                         alt="Profile"
@@ -151,18 +161,30 @@ export default function AccountSettings() {
                     </div>
                     <div
                       {...getAvatarRootProps()}
-                      className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity cursor-pointer rounded-full"
                     >
                       <input {...getAvatarInputProps()} />
                       {isUploading ? (
-                        <Loader2 className="w-6 h-6 text-white animate-spin" />
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 text-white animate-spin" />
+                        </motion.div>
                       ) : (
-                        <Camera className="w-6 h-6 text-white" />
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <Camera className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                        </motion.div>
                       )}
                     </div>
                   </div>
-                  <div className="mb-4 ml-4 text-white">
-                    <h3 className="text-xl font-bold">{displayName}</h3>
+                  <div className="mb-3 sm:mb-4 ml-3 sm:ml-4 text-white">
+                    <h3 className="text-lg sm:text-xl font-bold">
+                      {displayName}
+                    </h3>
                     <p className="text-sm opacity-90">@{username}</p>
                   </div>
                 </div>
@@ -170,13 +192,15 @@ export default function AccountSettings() {
             </div>
           </div>
 
-          <div className="p-4 text-sm text-gray-600">
-            <p>{bio.length > 100 ? bio.substring(0, 100) + "..." : bio}</p>
+          <div className="p-3 sm:p-4 text-sm text-gray-600">
+            <p className="line-clamp-3 sm:line-clamp-2">
+              {bio.length > 100 ? bio.substring(0, 100) + "..." : bio}
+            </p>
           </div>
         </div>
 
         {/* Username */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label
             htmlFor="username"
             className="block text-sm font-medium text-gray-700 mb-2"
@@ -189,7 +213,7 @@ export default function AccountSettings() {
               id="username"
               value={username}
               onChange={handleUsernameChange}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all text-base"
               placeholder="Enter username"
             />
             {isCheckingUsername && (
@@ -202,7 +226,7 @@ export default function AccountSettings() {
         </div>
 
         {/* Display Name */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label
             htmlFor="displayName"
             className="block text-sm font-medium text-gray-700 mb-2"
@@ -214,87 +238,92 @@ export default function AccountSettings() {
             id="displayName"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all text-base"
             placeholder="Enter display name"
           />
         </div>
 
         {/* Bio */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label
             htmlFor="bio"
             className="block text-sm font-medium text-gray-700 mb-2"
           >
             Bio
           </label>
-          <div data-color-mode="light">
+          <div
+            data-color-mode="light"
+            className="border border-gray-200 rounded-lg overflow-hidden"
+          >
             <MDEditor
               value={bio}
               onChange={(value) => setBio(value || "")}
               preview="edit"
               height={200}
               className="prose max-w-none"
+              data-color-mode="light"
+              visibleDragBar={false}
             />
           </div>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-gray-500 leading-relaxed">
             Markdown supported. Tell others about yourself and your reading
-            preferences.
+            preferences. Keep it concise and engaging.
           </p>
         </div>
 
         {/* Theme Selection */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-3">
             Theme
           </label>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <motion.button
               onClick={() => handleThemeChange("light")}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left ${
                 theme === "light"
-                  ? "border-primary bg-primary/5 text-primary"
+                  ? "border-primary bg-primary/5 text-primary shadow-md"
                   : "border-gray-200 hover:border-primary/30 text-gray-700"
               }`}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Sun size={18} />
-              <span>Light</span>
+              <Sun size={18} className="flex-shrink-0" />
+              <span className="font-medium">Light</span>
             </motion.button>
 
             <motion.button
               onClick={() => handleThemeChange("dark")}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left ${
                 theme === "dark"
-                  ? "border-primary bg-primary/5 text-primary"
+                  ? "border-primary bg-primary/5 text-primary shadow-md"
                   : "border-gray-200 hover:border-primary/30 text-gray-700"
               }`}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Moon size={18} />
-              <span>Dark</span>
+              <Moon size={18} className="flex-shrink-0" />
+              <span className="font-medium">Dark</span>
             </motion.button>
 
             <motion.button
               onClick={() => handleThemeChange("system")}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left ${
                 theme === "system"
-                  ? "border-primary bg-primary/5 text-primary"
+                  ? "border-primary bg-primary/5 text-primary shadow-md"
                   : "border-gray-200 hover:border-primary/30 text-gray-700"
               }`}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Laptop size={18} />
-              <span>System</span>
+              <Laptop size={18} className="flex-shrink-0" />
+              <span className="font-medium">System</span>
             </motion.button>
           </div>
         </div>
 
         {/* Save Button */}
         <motion.button
-          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+          className="w-full sm:w-auto px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -303,11 +332,11 @@ export default function AccountSettings() {
       </div>
 
       {/* Danger Zone */}
-      <div className="pt-8 border-t border-gray-200">
+      <div className="pt-6 sm:pt-8 border-t border-gray-200">
         <h3 className="text-lg font-medium text-red-600 mb-4">Danger Zone</h3>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <motion.button
-            className="px-6 py-2 border-2 border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-2"
+            className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -316,7 +345,7 @@ export default function AccountSettings() {
           </motion.button>
 
           <motion.button
-            className="px-6 py-2 border-2 border-amber-200 text-amber-600 rounded-lg hover:bg-amber-50 transition-colors flex items-center gap-2"
+            className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-amber-200 text-amber-600 rounded-lg hover:bg-amber-50 transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
