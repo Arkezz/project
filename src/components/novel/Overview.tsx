@@ -67,6 +67,7 @@ export default function Overview({
   const [recommendationSort, setRecommendationSort] = useState<
     "match" | "recent"
   >("match");
+  const [showAllRecommendations, setShowAllRecommendations] = useState(false);
   const [showRecommendationModal, setShowRecommendationModal] = useState(false);
   const [recommendations, setRecommendations] = useState([
     {
@@ -88,6 +89,86 @@ export default function Overview({
       genres: ["Fantasy", "Drama", "Mystery"],
       sharedGenres: ["Fantasy"],
       reason: "Complex world-building and character development",
+    },
+    {
+      id: "rec-3",
+      title: "The Beginning After the End",
+      cover:
+        "https://images.unsplash.com/photo-1622463027110-bd71e58fc5cf?q=80&w=500",
+      matchScore: 90,
+      genres: ["Action", "Fantasy", "Drama"],
+      sharedGenres: ["Action", "Fantasy"],
+      reason: "Strong main character with reincarnation theme",
+    },
+    {
+      id: "rec-4",
+      title: "Tower of God",
+      cover:
+        "https://images.unsplash.com/photo-1610402954605-0365bfc4e240?q=80&w=500",
+      matchScore: 85,
+      genres: ["Adventure", "Mystery", "Fantasy"],
+      sharedGenres: ["Fantasy", "Adventure"],
+      reason: "Climbing-based progression and mysterious powers",
+    },
+    {
+      id: "rec-5",
+      title: "Ranker Who Lives A Second Time",
+      cover:
+        "https://images.unsplash.com/photo-1604014237744-4d2d3f4d2f73?q=80&w=500",
+      matchScore: 83,
+      genres: ["Action", "Fantasy", "Game"],
+      sharedGenres: ["Action", "Fantasy"],
+      reason: "Game-like system and quest-driven plot",
+    },
+    {
+      id: "rec-6",
+      title: "Second Life Ranker",
+      cover:
+        "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=500",
+      matchScore: 87,
+      genres: ["Fantasy", "Action", "Revenge"],
+      sharedGenres: ["Action", "Fantasy"],
+      reason: "Revenge-driven story with RPG elements",
+    },
+    {
+      id: "rec-7",
+      title: "Re:Monster",
+      cover:
+        "https://images.unsplash.com/photo-1619441207975-b9b6c4130e23?q=80&w=500",
+      matchScore: 80,
+      genres: ["Fantasy", "Isekai", "Action"],
+      sharedGenres: ["Fantasy", "Action"],
+      reason: "Monster evolution and survival theme",
+    },
+    {
+      id: "rec-8",
+      title: "The Legendary Moonlight Sculptor",
+      cover:
+        "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?q=80&w=500",
+      matchScore: 82,
+      genres: ["Game", "Adventure", "Fantasy"],
+      sharedGenres: ["Fantasy", "Adventure"],
+      reason: "Immersive game world and underdog story",
+    },
+    {
+      id: "rec-9",
+      title: "I Alone Level-Up",
+      cover:
+        "https://images.unsplash.com/photo-1607799279861-6cfb9f1c50b1?q=80&w=500",
+      matchScore: 89,
+      genres: ["Action", "Fantasy", "RPG"],
+      sharedGenres: ["Action", "Fantasy"],
+      reason: "Lone protagonist leveling through dungeons",
+    },
+    {
+      id: "rec-10",
+      title: "A Returner’s Magic Should Be Special",
+      cover:
+        "https://images.unsplash.com/photo-1609332644207-1908f02b94f7?q=80&w=500",
+      matchScore: 86,
+      genres: ["Magic", "Fantasy", "Action"],
+      sharedGenres: ["Fantasy", "Action"],
+      reason: "Return from apocalyptic future to change fate",
     },
   ]);
 
@@ -460,22 +541,24 @@ export default function Overview({
         </section>
 
         {/* Compact Reviews Section */}
-        <section>
+        <section className="mt-8 sm:mt-12">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg">
+              <div className="p-1.5 sm:p-2 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg">
                 <MessageSquare className="text-blue-500" size={20} />
               </div>
               <div>
-                <h2 className="text-xl font-semibold">Community Reviews</h2>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+                <h2 className="text-lg sm:text-xl font-semibold">
+                  Community Reviews
+                </h2>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm text-gray-700">
                   <div className="flex items-center gap-1">
                     <Star size={14} className="text-amber-400 fill-current" />
                     <span className="font-medium">
                       {averageRating.toFixed(1)}
                     </span>
                   </div>
-                  <span>•</span>
+                  <span className="hidden sm:inline">•</span>
                   <span>
                     {reviews.length} review{reviews.length !== 1 ? "s" : ""}
                   </span>
@@ -483,14 +566,14 @@ export default function Overview({
               </div>
             </div>
 
-            <button className="text-primary hover:text-primary/80 text-sm font-medium transition-colors flex items-center gap-1">
+            <button className="text-primary hover:text-primary/80 text-sm font-medium transition-colors flex items-center gap-1 touch-manipulation">
               View all reviews
               <ArrowRight size={14} />
             </button>
           </div>
 
           {reviews.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-3 sm:space-y-4">
               {displayedReviews.map((review) => (
                 <ReviewCard
                   key={review.id}
@@ -501,8 +584,8 @@ export default function Overview({
               ))}
 
               {reviews.length > 2 && (
-                <div className="text-center pt-4">
-                  <button className="text-primary hover:text-primary/80 text-sm font-medium transition-colors">
+                <div className="text-center pt-3 sm:pt-4">
+                  <button className="text-primary hover:text-primary/80 text-sm font-medium transition-colors touch-manipulation">
                     View {reviews.length - 2} more review
                     {reviews.length - 2 !== 1 ? "s" : ""}
                   </button>
@@ -510,10 +593,12 @@ export default function Overview({
               )}
             </div>
           ) : (
-            <div className="text-center py-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+            <div className="text-center py-6 sm:py-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
               <MessageSquare size={32} className="text-gray-300 mx-auto mb-3" />
-              <h3 className="font-medium text-gray-900 mb-1">No reviews yet</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-medium text-gray-900 mb-1 text-sm sm:text-base">
+                No reviews yet
+              </h3>
+              <p className="text-gray-600 text-sm px-4">
                 Be the first to share your thoughts about this novel!
               </p>
             </div>
@@ -525,24 +610,44 @@ export default function Overview({
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Recommendations</h2>
             <div className="flex items-center gap-2">
+              {/* Add button: icon only on mobile, icon+text on md+ */}
               <motion.button
                 onClick={() => setShowRecommendationModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                className="flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                aria-label="Add Recommendation"
               >
-                <Plus size={16} />
-                <span>Add Recommendation</span>
+                <Plus size={18} />
+                <span className="hidden md:inline">Add</span>
               </motion.button>
-              <select
-                value={recommendationSort}
-                onChange={(e) => setRecommendationSort(e.target.value as any)}
-                className="text-sm bg-transparent border-none focus:ring-0 text-gray-600"
-              >
-                <option value="match">Best Match</option>
-                <option value="recent">Recently Added</option>
-              </select>
-              <div className="flex items-center gap-1 p-0.5 bg-gray-100 rounded-lg">
+              {/* View All button: icon+text on md+, icon only on mobile, more compact on mobile */}
+              {recommendations.length > 4 && (
+                <motion.button
+                  onClick={() =>
+                    setShowAllRecommendations(!showAllRecommendations)
+                  }
+                  className="flex items-center justify-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-surface border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all font-medium text-sm"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  aria-label={showAllRecommendations ? "Show Less" : "View All"}
+                >
+                  {showAllRecommendations ? (
+                    <>
+                      <ChevronUp size={18} />
+                      <span className="hidden md:inline">Show Less</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="hidden md:inline">
+                        View All ({recommendations.length})
+                      </span>
+                      <ChevronDown size={18} />
+                    </>
+                  )}
+                </motion.button>
+              )}
+              <div className="hidden md:flex items-center gap-1 p-0.5 bg-gray-100 rounded-lg">
                 <button
                   onClick={() => setRecommendationView("grid")}
                   className={`p-1.5 rounded-md transition-colors ${
@@ -567,91 +672,155 @@ export default function Overview({
             </div>
           </div>
 
-          <div
-            className={
-              recommendationView === "grid"
-                ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
-                : "space-y-3"
-            }
-          >
-            {recommendations.map((rec) => (
-              <motion.div
-                key={rec.id}
-                className={`group ${
-                  recommendationView === "list"
-                    ? "flex items-start gap-4 bg-surface p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                    : ""
-                }`}
-                whileHover={{ y: -2 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <div
-                  className={`relative ${
-                    recommendationView === "list" ? "w-20 h-28" : "aspect-[2/3]"
-                  } rounded-lg overflow-hidden`}
+          {/* Desktop View - Grid/List with Expand/Collapse */}
+          <div className="hidden md:block">
+            <div
+              className={
+                recommendationView === "grid"
+                  ? "grid grid-cols-2 lg:grid-cols-4 gap-4"
+                  : "space-y-3"
+              }
+            >
+              {(showAllRecommendations
+                ? recommendations
+                : recommendations.slice(0, 4)
+              ).map((rec) => (
+                <motion.div
+                  key={rec.id}
+                  className={`group ${
+                    recommendationView === "list"
+                      ? "flex items-start gap-4 bg-surface p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                      : ""
+                  }`}
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  <img
-                    src={rec.cover}
-                    alt={rec.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {recommendationView === "grid" && (
-                    <VoteOverlay id={rec.id} initialVotes={rec.votes} />
-                  )}
-                </div>
-
-                <div
-                  className={recommendationView === "list" ? "flex-1" : "mt-2"}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-medium line-clamp-1">{rec.title}</h3>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {rec.sharedGenres.map((genre) => (
-                          <span
-                            key={genre}
-                            className="px-2 py-0.5 bg-primary/5 text-primary text-xs rounded-full"
-                          >
-                            {genre}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    {recommendationView === "list" && (
-                      <div className="flex items-center gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => handleVote(rec.id, "up")}
-                          className={`p-1.5 rounded-full transition-all ${
-                            userVotes[rec.id] === "up"
-                              ? "bg-green-50 text-green-500 ring-1 ring-green-200"
-                              : "text-gray-400 hover:bg-gray-50"
-                          }`}
-                        >
-                          <ThumbsUp size={16} />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => handleVote(rec.id, "down")}
-                          className={`p-1.5 rounded-full transition-all ${
-                            userVotes[rec.id] === "down"
-                              ? "bg-red-50 text-red-500 ring-1 ring-red-200"
-                              : "text-gray-400 hover:bg-gray-50"
-                          }`}
-                        >
-                          <ThumbsDown size={16} />
-                        </motion.button>
-                      </div>
+                  <div
+                    className={`relative ${
+                      recommendationView === "list"
+                        ? "w-20 h-28"
+                        : "aspect-[2/3]"
+                    } rounded-lg overflow-hidden`}
+                  >
+                    <img
+                      src={rec.cover}
+                      alt={rec.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    {recommendationView === "grid" && (
+                      <VoteOverlay id={rec.id} initialVotes={rec.votes} />
                     )}
                   </div>
-                  {recommendationView === "list" && (
-                    <p className="text-sm text-gray-500 mt-2">{rec.reason}</p>
-                  )}
+
+                  <div
+                    className={
+                      recommendationView === "list" ? "flex-1" : "mt-2"
+                    }
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h3 className="font-medium line-clamp-1">
+                          {rec.title}
+                        </h3>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {rec.sharedGenres.map((genre) => (
+                            <span
+                              key={genre}
+                              className="px-2 py-0.5 bg-primary/5 text-primary text-xs rounded-full"
+                            >
+                              {genre}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      {recommendationView === "list" && (
+                        <div className="flex items-center gap-2">
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleVote(rec.id, "up")}
+                            className={`p-1.5 rounded-full transition-all ${
+                              userVotes[rec.id] === "up"
+                                ? "bg-green-50 text-green-500 ring-1 ring-green-200"
+                                : "text-gray-400 hover:bg-gray-50"
+                            }`}
+                          >
+                            <ThumbsUp size={16} />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleVote(rec.id, "down")}
+                            className={`p-1.5 rounded-full transition-all ${
+                              userVotes[rec.id] === "down"
+                                ? "bg-red-50 text-red-500 ring-1 ring-red-200"
+                                : "text-gray-400 hover:bg-gray-50"
+                            }`}
+                          >
+                            <ThumbsDown size={16} />
+                          </motion.button>
+                        </div>
+                      )}
+                    </div>
+                    {recommendationView === "list" && (
+                      <p className="text-sm text-gray-500 mt-2">{rec.reason}</p>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile View - Horizontal Scroll */}
+          <div className="md:hidden">
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4">
+              {recommendations.map((rec) => (
+                <motion.div
+                  key={rec.id}
+                  className="group flex-shrink-0 w-32"
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="relative aspect-[2/3] rounded-lg overflow-hidden mb-2">
+                    <img
+                      src={rec.cover}
+                      alt={rec.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <VoteOverlay id={rec.id} initialVotes={rec.votes} />
+                  </div>
+
+                  <div>
+                    <h3 className="font-medium text-sm line-clamp-2 leading-tight mb-1">
+                      {rec.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-1">
+                      {rec.sharedGenres.slice(0, 2).map((genre) => (
+                        <span
+                          key={genre}
+                          className="px-1.5 py-0.5 bg-primary/5 text-primary text-xs rounded-full"
+                        >
+                          {genre}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Mobile Scroll Indicator */}
+            {recommendations.length > 3 && (
+              <div className="flex justify-center mt-2">
+                <div className="flex gap-1">
+                  {Array.from({
+                    length: Math.ceil(recommendations.length / 3),
+                  }).map((_, i) => (
+                    <div key={i} className="w-2 h-2 rounded-full bg-gray-300" />
+                  ))}
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            )}
           </div>
         </section>
       </div>
