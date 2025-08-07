@@ -10,6 +10,7 @@ import GeneralInfoForm from "../components/edit/forms/GeneralInfoForm";
 import ReleaseInfoForm from "../components/edit/forms/ReleaseInfoForm";
 import RelationsForm from "../components/edit/forms/RelationsForm";
 import TranslationForm from "../components/edit/forms/TranslationForm";
+import ChapterManagementForm from "../components/edit/forms/ChapterManagementForm";
 
 type NovelEditForm = Omit<Novel, "id" | "statistics">;
 
@@ -18,6 +19,7 @@ const tabs = [
   { id: "release", label: "Release Information" },
   { id: "relations", label: "Relations" },
   { id: "translation", label: "Translation" },
+  { id: "chapters", label: "Chapters" },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -225,6 +227,7 @@ export default function NovelEdit() {
                 {activeTab === "release" && <ReleaseInfoForm />}
                 {activeTab === "relations" && <RelationsForm />}
                 {activeTab === "translation" && <TranslationForm />}
+                {activeTab === "chapters" && <ChapterManagementForm />}
               </motion.div>
             </AnimatePresence>
           </div>

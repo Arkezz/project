@@ -16,45 +16,57 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import OGImage from "./pages/OGImage";
 import EmailPreview from "./pages/EmailPreview";
+import Author from "./pages/Author";
+import AuthChoice from "./pages/AuthChoice";
+import AuthProvider from "./components/auth/AuthProvider";
+import DownloadEmailHtmlPage from "./pages/DownloadEmailHtmlPage";
 // import Home from "./pages/Home";
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-16">
-          <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/reading-list" element={<NovelDetails />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/thread" element={<ThreadDetails />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/novel/edit" element={<NovelEdit />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/og" element={<OGImage />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              background: "hsl(var(--color-surface))",
-              border: "1px solid hsl(var(--color-primary) / 0.1)",
-              color: "hsl(var(--color-text))",
-            },
-            className: "novel-toast",
-          }}
-          closeButton
-          richColors
-        />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-background">
+          <Navbar />
+          <main className="pt-16">
+            <Routes>
+              {/* <Route path="/" element={<Home />} /> */}
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/reading-list" element={<NovelDetails />} />
+              <Route path="/forum" element={<Forum />} />
+              <Route path="/thread" element={<ThreadDetails />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/novel/edit" element={<NovelEdit />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/og" element={<OGImage />} />
+              <Route path="/author" element={<Author />} />
+              <Route path="/auth-choice" element={<AuthChoice />} />
+              <Route
+                path="/download-email-html"
+                element={<DownloadEmailHtmlPage />}
+              />
+            </Routes>
+          </main>
+          <Footer />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: "hsl(var(--color-surface))",
+                border: "1px solid hsl(var(--color-primary) / 0.1)",
+                color: "hsl(var(--color-text))",
+              },
+              className: "novel-toast",
+            }}
+            closeButton
+            richColors
+          />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

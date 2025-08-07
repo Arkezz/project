@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Book, Calendar, Users, Globe } from "lucide-react";
+import { Book, Calendar, Users, Globe, BookOpen } from "lucide-react";
 
 interface Tab {
   id: string;
@@ -23,6 +23,8 @@ const getTabIcon = (id: string) => {
       return <Users className="w-4 h-4" />;
     case "translation":
       return <Globe className="w-4 h-4" />;
+    case "chapters":
+      return <BookOpen className="w-4 h-4" />;
     default:
       return null;
   }
@@ -38,6 +40,7 @@ export default function EditTabs({ tabs, activeTab, onChange }: EditTabsProps) {
 
             return (
               <motion.button
+                type="button"
                 key={tab.id}
                 onClick={() => onChange(tab.id)}
                 className={`relative flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all duration-200 whitespace-nowrap ${

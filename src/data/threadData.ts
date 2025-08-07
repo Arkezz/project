@@ -2,22 +2,22 @@ export const threadData = {
   id: "1",
   title: "Theory: The True Identity of the Black Dragon in Chapter 420",
   content: `# The Black Dragon Theory
-  
-  After carefully analyzing the recent chapters, I believe I've uncovered something significant about the Black Dragon's true identity. Here's my analysis:
-  
-  ## Key Evidence
-  
-  1. The dragon's peculiar behavior in Chapter 418
-  2. The ancient prophecy mentioned in Chapter 415
-  3. The recurring symbols in Art's dreams
-  
-  ## Supporting Details
-  
-  The way the dragon reacted to Art's presence suggests a deeper connection. Remember how in Chapter 416, the ancient texts specifically mentioned a "guardian bound by fate"? This perfectly aligns with...
-  
-  ## Conclusion
-  
-  Based on all these points, I believe the Black Dragon is actually...`,
+
+After carefully analyzing the recent chapters, I believe I've uncovered something significant about the Black Dragon's true identity. Here's my analysis:
+
+## Key Evidence
+
+1. The dragon's peculiar behavior in Chapter 418
+2. The ancient prophecy mentioned in Chapter 415
+3. The recurring symbols in Art's dreams
+
+## Supporting Details
+
+The way the dragon reacted to Art's presence suggests a deeper connection. Remember how in Chapter 416, the ancient texts specifically mentioned a "guardian bound by fate"? This perfectly aligns with...
+
+## Conclusion
+
+Based on all these points, I believe the Black Dragon is actually...`,
   author: {
     name: "TheoryMaster",
     avatar:
@@ -63,6 +63,15 @@ export const threadData = {
       parentId: "1",
       quotedContent:
         "However, I think there might be another interpretation of the symbols in Art's dreams...",
+      isDeleted: true,
+      deletionInfo: {
+        deletionType: "moderator",
+        deletedAt: "2024-03-11T09:00:00Z",
+        deletedBy: {
+          name: "ModJane",
+          role: "moderator",
+        },
+      },
       quotedAuthor: {
         name: "NovelSage",
       },
@@ -130,6 +139,65 @@ export const threadData = {
       quotedAuthor: {
         name: "SkepticalReader",
       },
+    },
+    // --- Random extra data ---
+    {
+      id: "7",
+      content:
+        "I love reading all these theories! Personally, I think the Black Dragon is a red herring and the real twist is yet to come.",
+      author: {
+        name: "PlotTwistFan",
+        avatar:
+          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=160&h=160&fit=crop&crop=faces",
+        reputation: 19,
+      },
+      createdAt: "2024-03-10T17:00:00Z",
+      upvotes: 7,
+    },
+    {
+      id: "8",
+      content:
+        "Did anyone notice the runes on the dragon's scales? They match the ones from the ancient ruins in Chapter 410!",
+      author: {
+        name: "RuneSeeker",
+        avatar:
+          "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=160&h=160&fit=crop&crop=faces",
+        reputation: 25,
+      },
+      createdAt: "2024-03-10T17:30:00Z",
+      upvotes: 11,
+    },
+    {
+      id: "9",
+      content:
+        "Great catch, @RuneSeeker! That detail might be the key to understanding the dragon's origin.",
+      author: {
+        name: "TheoryMaster",
+        avatar:
+          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&h=160&fit=crop&crop=faces",
+        reputation: 50,
+      },
+      createdAt: "2024-03-10T18:00:00Z",
+      upvotes: 13,
+      parentId: "8",
+      quotedContent:
+        "They match the ones from the ancient ruins in Chapter 410!",
+      quotedAuthor: {
+        name: "RuneSeeker",
+      },
+    },
+    {
+      id: "10",
+      content:
+        "I think the Black Dragon is actually a reincarnation of one of the ancient kings. The hints are all there if you look closely at the flashbacks.",
+      author: {
+        name: "FlashbackFan",
+        avatar:
+          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=160&h=160&fit=crop&crop=faces",
+        reputation: 17,
+      },
+      createdAt: "2024-03-10T18:30:00Z",
+      upvotes: 5,
     },
   ],
 };

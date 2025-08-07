@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { useAuth } from "../../hooks/useAuth";
+import PasskeySetupPrompt from "./PasskeySetupPrompt";
 
 interface EmailVerificationProps {
   email: string;
 }
 
 export default function EmailVerification({ email }: EmailVerificationProps) {
+  const { resendVerification, verifyEmail } = useAuth();
   const [countdown, setCountdown] = useState(60);
   const [isResending, setIsResending] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [showPasskeySetup, setShowPasskeySetup] = useState(false);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -21,19 +25,57 @@ export default function EmailVerification({ email }: EmailVerificationProps) {
     };
   }, [countdown]);
 
+  // Simulate email verification check
+  useEffect(() => {
+    const checkVerification = setInterval(async () => {
+      // In a real app, this would poll the server or use WebSocket
+      // For demo, we'll simulate verification after 10 seconds
+      const timeElapsed = 60 - countdown;
+      if (timeElapsed > 10 && !isVerified) {
+        setIsVerified(true);
+        setShowPasskeySetup(true);
+        clearInterval(checkVerification);
+      }
+    }, 1000);
+
+    return () => clearInterval(checkVerification);
+  }, [countdown, isVerified]);
+
   const handleResend = async () => {
     setIsResending(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success("Verification email sent successfully!");
+    const success = await resendVerification();
+    if (success) {
       setCountdown(60);
-    } catch (error) {
-      toast.error("Failed to send verification email. Please try again.");
-    } finally {
-      setIsResending(false);
     }
+    setIsResending(false);
   };
+
+  if (showPasskeySetup) {
+    return <PasskeySetupPrompt onSkip={() => setShowPasskeySetup(false)} />;
+  }
+
+  if (isVerified) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center space-y-4"
+      >
+        <div className="p-6 bg-green-50 rounded-lg border border-green-200">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Mail className="text-green-600" size={32} />
+          </div>
+          <h3 className="text-lg font-semibold text-green-800 mb-2">
+            Email Verified!
+          </h3>
+          <p className="text-green-700">
+            Your email has been successfully verified. You can now access all
+            features of NoviList.
+          </p>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <div className="text-center space-y-4">
@@ -49,6 +91,13 @@ export default function EmailVerification({ email }: EmailVerificationProps) {
           <br />
           <span className="font-medium text-gray-900">{email}</span>
         </p>
+
+        <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <p className="text-sm text-blue-700">
+            <strong>Demo:</strong> Email verification will complete
+            automatically in a few seconds.
+          </p>
+        </div>
 
         <button
           onClick={handleResend}

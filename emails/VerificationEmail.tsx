@@ -20,8 +20,8 @@ interface VerificationEmailProps {
 }
 
 export default function VerificationEmail({
-  username = "Novel Enthusiast",
-  verificationUrl = "https://novilist.com/verify?token=123",
+  username = "{{.Username}}",
+  verificationUrl = "{{.VerificationURL}}",
 }: VerificationEmailProps) {
   const previewText =
     "Welcome to Novilist! Please verify your email to start your tracking journey.";
