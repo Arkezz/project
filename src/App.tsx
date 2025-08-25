@@ -20,6 +20,8 @@ import Author from "./pages/Author";
 import AuthChoice from "./pages/AuthChoice";
 import AuthProvider from "./components/auth/AuthProvider";
 import DownloadEmailHtmlPage from "./pages/DownloadEmailHtmlPage";
+import EmailVerification from "./pages/EmailVerification";
+import Donate from "./pages/Donate";
 // import Home from "./pages/Home";
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
               <Route path="/og" element={<OGImage />} />
               <Route path="/author" element={<Author />} />
               <Route path="/auth-choice" element={<AuthChoice />} />
+              <Route path="/verify" element={<EmailVerification />} />
+              <Route path="/donate" element={<Donate />} />
               <Route
                 path="/download-email-html"
                 element={<DownloadEmailHtmlPage />}

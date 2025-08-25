@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "../../../hooks/useAuth";
+import PasskeyDisableModal from "../../auth/PasskeyDisableModal";
 
 export default function SecuritySettings() {
   const { auth, setupPasskey, removePasskey } = useAuth();
@@ -23,6 +24,7 @@ export default function SecuritySettings() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPasskeySetup, setShowPasskeySetup] = useState(false);
   const [isPasskeyLoading, setIsPasskeyLoading] = useState(false);
+  const [showPasskeyDisableModal, setShowPasskeyDisableModal] = useState(false);
 
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,15 +46,12 @@ export default function SecuritySettings() {
   };
 
   const handleRemovePasskey = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove your passkey? You will need to use email and password to sign in."
-      )
-    ) {
-      setIsPasskeyLoading(true);
-      await removePasskey();
-      setIsPasskeyLoading(false);
-    }
+    setShowPasskeyDisableModal(true);
+  };
+
+  const handlePasskeyDisableSuccess = () => {
+    // Refresh the component state or trigger a re-render
+    toast.success("Passkey has been successfully disabled");
   };
 
   const isPasskeySupported =
@@ -106,21 +105,32 @@ export default function SecuritySettings() {
                 <Key className="text-primary" size={20} />
                 <h3 className="font-medium">Passkey Authentication</h3>
               </div>
-              <button
-                onClick={togglePasskeySetup}
-                disabled={!isPasskeySupported || isPasskeyLoading}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
-                  auth.user?.passkeyEnabled
-                    ? "bg-green-500"
-                    : "bg-gray-200 shadow-inner"
-                } disabled:opacity-50`}
-              >
-                <motion.div
-                  className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-sm"
-                  animate={{ x: auth.user?.passkeyEnabled ? 24 : 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
-              </button>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`text-sm font-medium ${
+                    auth.user?.passkeyEnabled
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {auth.user?.passkeyEnabled ? "Enabled" : "Disabled"}
+                </span>
+                <button
+                  onClick={togglePasskeySetup}
+                  disabled={!isPasskeySupported || isPasskeyLoading}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    auth.user?.passkeyEnabled
+                      ? "bg-green-500"
+                      : "bg-gray-200 shadow-inner"
+                  } disabled:opacity-50`}
+                >
+                  <motion.div
+                    className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-sm"
+                    animate={{ x: auth.user?.passkeyEnabled ? 24 : 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                </button>
+              </div>
             </div>
 
             <p className="text-sm text-gray-600 mb-4">
@@ -140,11 +150,15 @@ export default function SecuritySettings() {
                   <CheckCircle2 size={16} />
                   <span>Passkey is active and ready to use</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium">Enhanced Security Active</p>
+                    <p>Your account is protected with passkey authentication</p>
+                  </div>
                   <motion.button
                     onClick={handleRemovePasskey}
                     disabled={isPasskeyLoading}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 border border-red-200"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -153,7 +167,7 @@ export default function SecuritySettings() {
                     ) : (
                       <Trash2 size={16} />
                     )}
-                    Remove Passkey
+                    Disable
                   </motion.button>
                 </div>
               </div>
@@ -163,10 +177,14 @@ export default function SecuritySettings() {
                   <AlertTriangle size={16} />
                   <span>Your account could be more secure with a passkey</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium">Passkey Not Set Up</p>
+                    <p>Enable passkey for enhanced security and convenience</p>
+                  </div>
                   <motion.button
                     onClick={() => setShowPasskeySetup(true)}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -422,6 +440,13 @@ export default function SecuritySettings() {
             </motion.div>
           </div>
         )}
+
+        {/* Passkey Disable Modal */}
+        <PasskeyDisableModal
+          isOpen={showPasskeyDisableModal}
+          onClose={() => setShowPasskeyDisableModal(false)}
+          onSuccess={handlePasskeyDisableSuccess}
+        />
       </div>
     </>
   );

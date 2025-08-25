@@ -8,6 +8,7 @@ import ReviewsTab from "../components/profile/tabs/ReviewsTab";
 import SubmissionsTab from "../components/profile/tabs/SubmissionsTab";
 import StatsTab from "../components/profile/tabs/StatsTab";
 import { motion, AnimatePresence } from "framer-motion";
+import OverviewTab from "../components/profile/tabs/OverviewTab";
 
 type TabId =
   | "overview"
@@ -23,7 +24,7 @@ export default function Profile() {
   const renderTabContent = () => {
     switch (activeTab) {
       case "overview":
-        return <ReadingLists />;
+        return <OverviewTab />;
       case "social":
         return <SocialTab />;
       case "favorites":
